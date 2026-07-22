@@ -7,4 +7,39 @@
  :itonami.blueprint/governor :market-entry-compliance-governor
  :itonami.blueprint/robotics false
  :itonami.blueprint/required-technologies [:identity :forms :dmn :bpmn :audit-ledger]
- :itonami.blueprint/status :public-oss}
+ :itonami.blueprint/status :public-oss
+ :itonami.blueprint/maturity :implemented
+ :itonami.blueprint/implemented-slice
+ "src/marketentry/* (langgraph-clj StateGraph actor, compiled via
+ `operation/build` -> `g/state-graph` -> `g/compile-graph` with
+ `interrupt-before #{:request-approval}`): facts.cljc (official
+ spec-basis catalog: Registrų centras / Viešųjų pirkimų įstatymas
+ (Law No. I-1491) + VPT / CVP IS / VMI, plus `legacy-cvp-is-domains`
+ + `stale-cvp-is-domain?`), governor.cljc (Market-Entry Compliance
+ Governor -- spec-basis HARD check, evidence-incomplete HARD check,
+ `:stale-cvp-is-domain` HARD check independently rejecting any
+ proposal that cites the LEGACY, archive-only-since-2024-12-01 CVP IS
+ domain (eviesiejipirkimai.lt / pirkimai.eviesiejipirkimai.lt) instead
+ of the current viesiejipirkimai.lt -- the flagship new check for this
+ vertical, grounded in the December 2024 CVP IS platform migration --,
+ `:vat-registration-missing` HARD check independently verifying
+ `:vat-registered?` when `:requires-vat-registration?` is true
+ (VMI, EUR 45,000 annual-taxable-turnover threshold), engagement-fee-
+ mismatch independent recompute, confidence-floor/actuation gate, plus
+ double-draft/double-submit guards), store.cljc (MemStore +
+ DatomicStore via `io.github.kotoba-lang/langchain-store`
+ (`ls/enc`/`ls/dec*`/`ls/read-stream`/`ls/append-blob!`) instead of a
+ hand-rolled EDN-blob codec), registry.cljc (pure-function
+ filing-draft/filing-submit record construction + fee recompute),
+ marketentryllm.cljc (mock MarketEntry Advisor with `:no-spec?` and
+ `:stale-cvp-domain?` failure-mode injection flags), operation.cljc
+ (intake -> advise -> govern -> decide ->
+ [request-approval ->] commit/hold StateGraph, `store/append-ledger!`
+ called from both the `:commit` and `:hold` nodes), phase.cljc (0->3
+ rollout, `:filing/draft`/`:filing/submit` permanently excluded from
+ every phase's `:auto` set), sim.cljc (demo driver). 32 tests / 110
+ assertions passing (governor contract + store parity + facts + phase
+ + registry, plus this repo's separate `culture` domain namespace,
+ left untouched), clj-kondo clean (0 errors, 9 non-fatal
+ unused-binding/unused-require warnings, all pre-existing/mechanical
+ and unrelated to correctness)."}
