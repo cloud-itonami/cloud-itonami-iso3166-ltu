@@ -37,7 +37,7 @@
   [date]\" citation for I-1491 (not independently verified -- the
   catalog cites only \"as amended\", never a fabricated amendment
   chain)."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 (def legacy-cvp-is-domains
   "CVP IS domains that were the LIVE procurement platform before the
