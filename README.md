@@ -5,7 +5,7 @@
 `vat-registration-missing` (EUR 45,000 VMI threshold).
 
 ```
-clojure -M:dev:test
+kbb -M:dev:test
 ```
 
 Open ISO 3166 Blueprint for **LTU**: Lithuania.
