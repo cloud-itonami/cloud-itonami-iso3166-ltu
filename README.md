@@ -20,11 +20,11 @@ tax registration, and EU single-market rules in Lithuania, so the
 operator can win and service a government contract without hiring a
 full in-house compliance department.
 
-## Compliance checks (`src/marketentry/governor.cljc`)
+## Compliance checks (`src/marketentry/governor.cljk`)
 
 Seven HARD checks (a human approver cannot override them) plus a SOFT
 confidence/actuation gate. Every regulatory field traces to
-`src/marketentry/facts.cljc`, which cites only independently-verified
+`src/marketentry/facts.cljk`, which cites only independently-verified
 sources -- see the `facts.cljc` docstring for the full source list.
 
 | # | Check (`:rule`) | Applies to | Grounded in |
@@ -81,7 +81,7 @@ must separately agree before anything reaches a real portal:
    `:filing/submit` in ANY phase's `:auto` set (phases 0-3) -- a
    permanent structural fact, not a rollout milestone still to come.
 
-`interrupt-before #{:request-approval}` (`src/marketentry/operation.cljc`)
+`interrupt-before #{:request-approval}` (`src/marketentry/operation.cljk`)
 pauses the langgraph-clj StateGraph run at that node; only an explicit
 `{:approval {:status :approved :by ...}}` resume can advance it to
 `:commit`. Every commit AND every hold appends exactly one fact to the
@@ -156,7 +156,7 @@ Alongside the market-entry / statute catalogs, this repo carries a
 `com-junkawasaki/root`) — national dishes, protected products, beverages,
 crafts, festivals and heritage sites for Lithuania:
 
-- `src/culture/facts.cljc` — the catalog, source of truth (keyed by
+- `src/culture/facts.cljk` — the catalog, source of truth (keyed by
   uppercase ISO3, mirroring `statute.facts`).
 - `schema/culture.edn` — DataScript schema.
 - `data/culture-tx.edn` — derived DataScript tx-data (regenerated from
